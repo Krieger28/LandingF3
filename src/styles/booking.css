@@ -1,0 +1,100 @@
+/* Estilos del formulario de reserva (se cargan solo al abrirlo) */
+
+.booking {
+  width: min(100% - 24px, 1080px); max-height: calc(100dvh - 24px);
+  padding: 0; border: 0; border-radius: 22px; background: var(--paper); color: var(--ink);
+  box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.booking[open] { animation: booking-in .28s cubic-bezier(.2,.8,.2,1); }
+.booking::backdrop { background: rgb(14 26 21 / .6); backdrop-filter: blur(3px); animation: fade-in .25s ease; }
+@keyframes booking-in { from { opacity: 0; transform: translateY(16px) scale(.98); } }
+@keyframes fade-in { from { opacity: 0; } }
+
+.booking-panel { display: flex; flex-direction: column; max-height: calc(100dvh - 24px); }
+.booking-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 22px clamp(20px, 3vw, 32px) 18px; border-bottom: 1px solid var(--line);
+}
+.booking-head .eyebrow { margin-bottom: 6px; }
+.booking-head h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+.icon-btn { flex: none; width: 42px; height: 42px; border-radius: 50%; border: 0; background: var(--sand); display: grid; place-items: center; cursor: pointer; }
+.icon-btn:hover { background: var(--line); }
+
+.booking-form { overflow-y: auto; overscroll-behavior: contain; }
+.booking-grid { display: grid; grid-template-columns: auto minmax(360px, 1fr); }
+.booking-calendar { padding: 22px clamp(16px, 3vw, 28px); background: var(--cream); border-right: 1px solid var(--line); }
+.booking-calendar fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.booking-calendar legend { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-bottom: 12px; padding: 0; }
+.booking-calendar legend svg { color: var(--accent); }
+.booking-fields { display: flex; flex-direction: column; gap: 16px; padding: 22px clamp(20px, 3vw, 32px) 28px; }
+
+/* react-day-picker theme */
+.booking .rdp-root {
+  --rdp-accent-color: var(--forest);
+  --rdp-accent-background-color: #e3ece6;
+  --rdp-range_middle-background-color: #e3ece6;
+  --rdp-range_middle-color: var(--forest);
+  --rdp-range_start-date-background-color: var(--forest);
+  --rdp-range_end-date-background-color: var(--forest);
+  --rdp-today-color: var(--accent);
+  --rdp-day-width: 42px; --rdp-day-height: 42px;
+  --rdp-day_button-width: 40px; --rdp-day_button-height: 40px;
+  --rdp-months-gap: 28px;
+  font-size: .95rem;
+}
+.booking .rdp-months { justify-content: center; }
+.booking .rdp-caption_label { font-family: var(--font-display); font-weight: 500; font-size: 1.1rem; text-transform: capitalize; }
+.booking .rdp-weekday { font-size: .75rem; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.booking .rdp-disabled { opacity: .3; }
+.booking .rdp-chevron { fill: var(--forest); }
+
+.range-summary { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; margin-top: 16px; }
+.range-summary div { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+.range-summary span { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 600; }
+.range-summary strong { display: block; font-size: .9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.range-summary strong::first-letter { text-transform: uppercase; }
+
+.field-row { display: grid; grid-template-columns: 1fr 120px; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > span { font-size: .88rem; font-weight: 600; }
+.field em { font-style: normal; font-weight: 400; color: var(--muted); }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: 48px; padding: 11px 14px; border: 1.5px solid var(--line); border-radius: 12px;
+  background: var(--paper); font-size: 1rem; transition: border-color .2s, box-shadow .2s;
+}
+.field textarea { resize: vertical; min-height: 84px; }
+.field select { appearance: none; padding-right: 38px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%235b6862' stroke-width='2'%3E%3Cpath d='m1 1 5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--forest-3); box-shadow: 0 0 0 4px rgb(63 107 88 / .15); }
+.field [aria-invalid="true"] { border-color: #b3261e; }
+.field-error { color: #b3261e; font-size: .85rem; margin-top: 4px; }
+.booking-calendar .field-error { margin-top: 10px; }
+.form-alert { padding: 12px 14px; border-radius: 12px; background: #fdecea; color: #8c1d18; font-size: .92rem; }
+.form-note { font-size: .82rem; color: var(--muted); text-align: center; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.booking-success { padding: 48px clamp(24px, 5vw, 64px) 56px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; overflow-y: auto; }
+.booking-success > svg { color: var(--forest-3); }
+.booking-success h3 { font-size: 2rem; }
+.booking-success p { max-width: 520px; color: var(--muted); }
+.booking-success strong { color: var(--ink); }
+.booking-success-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 14px; }
+
+@media (max-width: 860px) {
+  .booking-grid { grid-template-columns: 1fr; }
+  .booking-calendar { border-right: 0; border-bottom: 1px solid var(--line); display: flex; justify-content: center; }
+  .booking-calendar fieldset { width: 100%; max-width: 440px; }
+  .booking .rdp-root { display: flex; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .booking { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; margin: 0; }
+  .booking-panel { max-height: 100dvh; height: 100%; }
+  .booking .rdp-root { --rdp-day-width: 40px; --rdp-day-height: 40px; --rdp-day_button-width: 38px; --rdp-day_button-height: 38px; }
+  .range-summary { grid-template-columns: 1fr 1fr; }
+  .range-summary div:last-child { grid-column: 1 / -1; }
+  .field-row { grid-template-columns: 1fr 96px; }
+}
