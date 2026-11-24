@@ -44,18 +44,18 @@ Se ordenan por nombre: `01.jpg`, `02.jpg`, `03.jpg`…
 
 El navegador descarga solo el tamaño que necesita según la pantalla, y las fotos fuera de la vista se cargan recién al hacer scroll (`loading="lazy"`). Una foto de 12 MB del celular termina pesando entre ~40 KB y ~300 KB.
 
-## Recibir las consultas por mail (Web3Forms, gratis)
+## Recibir las consultas por mail
 
-1. Entrá a <https://web3forms.com>, poné el mail donde querés recibir las consultas y te llega una **Access Key**.
-2. Copiá `.env.example` como `.env` y pegá la clave:
-   ```
-   VITE_WEB3FORMS_KEY=tu-clave-aca
-   ```
-3. En el hosting (Vercel / Netlify) cargá la misma variable `VITE_WEB3FORMS_KEY` en *Environment Variables* y volvé a desplegar.
+Ya está configurado con **Web3Forms** (gratis). Las consultas llegan al mail con el que se creó la clave.
+
+La clave está en `src/data/site.js` → `contact.web3formsKey`. Es pública por diseño (viaja en el navegador), así que no hace falta cargarla como variable de entorno en el hosting.
+
+Para cambiar el mail de destino: sacá una clave nueva en <https://web3forms.com> con el otro mail y reemplazala ahí.
+(Opcional: la variable de entorno `VITE_WEB3FORMS_KEY`, si existe, tiene prioridad sobre la de `site.js`.)
 
 Cada consulta llega con: cabaña, llegada, salida, cantidad de noches, huéspedes, nombre, email, teléfono y mensaje. Podés responder directo desde el mail (el "responder a" es el email del cliente).
 
-> Sin la clave configurada, el formulario abre el programa de correo del visitante con la consulta ya escrita (alternativa de emergencia).
+> Si el envío falla, el formulario muestra un aviso con un link a WhatsApp con la consulta ya escrita.
 
 ## Publicar con tu dominio
 

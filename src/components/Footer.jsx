@@ -1,9 +1,11 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { InstagramIcon, WhatsAppIcon } from './BrandIcons.jsx'
+import { useLang } from '../i18n/index.jsx'
 import { site } from '../data/site.js'
 import isotipo from '../assets/images/logos/la-posta-isotipo-verde.svg'
 
 export default function Footer({ onBook }) {
+  const { t } = useLang()
   const { contact, location } = site
   const year = new Date().getFullYear()
 
@@ -12,11 +14,11 @@ export default function Footer({ onBook }) {
       <div className="container">
         <div className="cta-band">
           <div>
-            <h2>¿Listo para tu próxima escapada?</h2>
-            <p>Consultá disponibilidad en un minuto. Te respondemos a la brevedad.</p>
+            <h2>{t.footer.ctaTitle}</h2>
+            <p>{t.footer.ctaText}</p>
           </div>
           <button className="btn btn-primary btn-lg" onClick={() => onBook()}>
-            Consultar disponibilidad
+            {t.common.checkAvailability}
           </button>
         </div>
 
@@ -32,7 +34,7 @@ export default function Footer({ onBook }) {
                 <small>DEL TRAPICHE</small>
               </span>
             </a>
-            <p className="footer-tag">{site.tagline}</p>
+            <p className="footer-tag">{t.footer.tagline}</p>
           </div>
           <ul className="footer-contact">
             <li><MapPin size={18} aria-hidden="true" /> {location.address}</li>
@@ -54,7 +56,7 @@ export default function Footer({ onBook }) {
           </ul>
         </div>
 
-        <p className="footer-legal">© {year} {site.name}. Todos los derechos reservados. Desarrollado por <a href="https://levelear.com" target="_blank">Levelear</a></p>
+        <p className="footer-legal">{t.footer.legal(year, site.name)[0]}<a href="https://levelear.com" target="_blank">Levelear</a></p>
       </div>
     </footer>
   )

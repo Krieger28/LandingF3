@@ -1,17 +1,13 @@
 import { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Languages, Menu, X } from 'lucide-react'
 import { site } from '../data/site.js'
+import { useLang } from '../i18n/index.jsx'
 import isotipo from '../assets/images/logos/la-posta-isotipo-verde.svg'
 
-const links = [
-  { href: '#cabanas', label: 'Cabañas' },
-  { href: '#accesibilidad', label: 'Accesibilidad' },
-  { href: '#servicios', label: 'Servicios' },
-  { href: '#ubicacion', label: 'Ubicación' },
-  { href: '#preguntas', label: 'Preguntas' },
-]
+const hrefs = ['#cabanas', '#accesibilidad', '#servicios', '#ubicacion', '#preguntas']
 
 export default function Header({ onBook, onIntent }) {
+  const { t, toggleLang } = useLang()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -41,26 +37,28 @@ export default function Header({ onBook, onIntent }) {
           </span>
           <span className="brand-text">
               {site.shortName}
-            <small>   DEL TRAPICHE</small>
-          
+            <small>DEL TRAPICHE</small>
           </span>
         </a>
 
-        <nav id="main-nav" className={`main-nav ${open ? 'is-open' : ''}`} aria-label="Principal">
+        <nav id="main-nav" className={`main-nav ${open ? 'is-open' : ''}`} aria-label={t.nav.label}>
           <ul>
-            {links.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} onClick={close}>{l.label}</a>
+            {hrefs.map((href, i) => (
+              <li key={href}>
+                <a href={href} onClick={close}>{t.nav.links[i]}</a>
               </li>
             ))}
           </ul>
+          <button type="button" className="lang-toggle" onClick={toggleLang} aria-label={t.nav.langLabel} lang={t.code === 'es' ? 'en' : 'es'}>
+            <Languages size={16} aria-hidden="true" /> {t.nav.langButton}
+          </button>
           <button
             className="btn btn-primary nav-cta"
             onMouseEnter={onIntent}
             onFocus={onIntent}
             onClick={() => { close(); onBook() }}
           >
-            Reservar
+            {t.nav.book}
           </button>
         </nav>
 
@@ -68,7 +66,7 @@ export default function Header({ onBook, onIntent }) {
           className="nav-toggle"
           aria-expanded={open}
           aria-controls="main-nav"
-          aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+          aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X size={24} /> : <Menu size={24} />}

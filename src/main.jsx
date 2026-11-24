@@ -4,9 +4,12 @@ import '@fontsource-variable/inter'
 import '@fontsource-variable/fraunces'
 import './styles/global.css'
 import App from './App.jsx'
+import { LangProvider } from './i18n/index.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <LangProvider>
+      <App />
+    </LangProvider>
   </StrictMode>,
 )

@@ -1,6 +1,7 @@
 import { Accessibility, BedDouble, Trees, Users } from 'lucide-react'
 import Picture from './Picture.jsx'
 import { getImages } from '../lib/images.js'
+import { useLang } from '../i18n/index.jsx'
 import { site } from '../data/site.js'
 import { cabanas } from '../data/cabanas.js'
 
@@ -8,6 +9,11 @@ const heroPic = getImages('hero')[0]
 const totalGuests = cabanas.reduce((n, c) => n + c.guests, 0)
 
 export default function Hero({ onBook, onIntent }) {
+  const { t } = useLang()
+  const [titlePre, titleEm, titlePost] = t.hero.title
+  const f = t.hero.facts
+  const cabinsFact = f.cabins(cabanas.length)
+  const guestsFact = f.guests(totalGuests)
   return (
     <section id="top" className={`hero ${heroPic ? 'has-image' : ''}`}>
       <div className="hero-media" aria-hidden="true">
@@ -26,23 +32,23 @@ export default function Hero({ onBook, onIntent }) {
       <div className="container hero-content">
         <p className="eyebrow eyebrow-light">{site.location.city}, {site.location.province}</p>
         <h1>
-          Tu refugio para <em>desconectar</em> y disfrutar
+          {titlePre}<em>{titleEm}</em>{titlePost}
         </h1>
-        <p className="hero-lead">{site.description}</p>
+        <p className="hero-lead">{t.hero.lead}</p>
         <div className="hero-actions">
           <button className="btn btn-primary btn-lg" onMouseEnter={onIntent} onFocus={onIntent} onClick={() => onBook()}>
-            Consultar disponibilidad
+            {t.common.checkAvailability}
           </button>
-          <a className="btn btn-ghost-light btn-lg" href="#cabanas">Ver las cabañas</a>
+          <a className="btn btn-ghost-light btn-lg" href="#cabanas">{t.hero.seeCabins}</a>
         </div>
       </div>
 
       <div className="container">
         <ul className="hero-facts">
-          <li><Trees size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>{cabanas.length} cabañas</strong> rodeadas de verde</span></li>
-          <li><Users size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>Hasta {totalGuests}</strong> huéspedes en total</span></li>
-          <li><Accessibility size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>Cabaña accesible</strong> para todos</span></li>
-          <li><BedDouble size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>Ropa blanca</strong> incluida</span></li>
+          <li><Trees size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>{cabinsFact[0]}</strong>{cabinsFact[1]}</span></li>
+          <li><Users size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>{guestsFact[0]}</strong>{guestsFact[1]}</span></li>
+          <li><Accessibility size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>{f.accessible[0]}</strong>{f.accessible[1]}</span></li>
+          <li><BedDouble size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>{f.linen[0]}</strong>{f.linen[1]}</span></li>
         </ul>
       </div>
     </section>

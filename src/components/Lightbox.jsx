@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import Picture from './Picture.jsx'
+import { useLang } from '../i18n/index.jsx'
 
 const MIN_ZOOM = 1
 const MAX_ZOOM = 5
@@ -14,6 +15,7 @@ const NO_ZOOM = { s: 1, x: 0, y: 0 }
  * `onClose(index)` devuelve la última foto vista.
  */
 export default function Lightbox({ images, name, start = 0, onClose }) {
+  const { t } = useLang()
   const dialogRef = useRef(null)
   const stageRef = useRef(null)
   const touchX = useRef(null)
@@ -113,7 +115,7 @@ export default function Lightbox({ images, name, start = 0, onClose }) {
     <dialog
       ref={dialogRef}
       className="lightbox"
-      aria-label={`Fotos de ${name}`}
+      aria-label={t.cabins.photosOf(name)}
       onClose={() => onClose(index)}
       onKeyDown={onKeyDown}
       onTouchStart={onTouchStart}
@@ -132,23 +134,23 @@ export default function Lightbox({ images, name, start = 0, onClose }) {
         <Picture
           key={images[index].img.src}
           pic={images[index]}
-          alt={`${name} — foto ${index + 1} de ${count}`}
+          alt={t.cabins.photoCaption(name, index + 1, count)}
           sizes="100vw"
           priority
           className="lightbox-pic"
         />
       </div>
 
-      <button className="lightbox-btn lightbox-close" onClick={close} aria-label="Cerrar" autoFocus>
+      <button className="lightbox-btn lightbox-close" onClick={close} aria-label={t.common.close} autoFocus>
         <X size={24} />
       </button>
 
       {count > 1 && (
         <>
-          <button className="lightbox-btn lightbox-nav prev" onClick={() => go(-1)} aria-label="Foto anterior">
+          <button className="lightbox-btn lightbox-nav prev" onClick={() => go(-1)} aria-label={t.common.prevPhoto}>
             <ChevronLeft size={26} />
           </button>
-          <button className="lightbox-btn lightbox-nav next" onClick={() => go(1)} aria-label="Foto siguiente">
+          <button className="lightbox-btn lightbox-nav next" onClick={() => go(1)} aria-label={t.common.nextPhoto}>
             <ChevronRight size={26} />
           </button>
           <div className="lightbox-count" aria-live="polite">{index + 1} / {count}</div>

@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Clock, MapPin } from 'lucide-react'
+import { useLang } from '../i18n/index.jsx'
 import { site } from '../data/site.js'
 
 export default function Location() {
+  const { t } = useLang()
   const mapRef = useRef(null)
   const [showMap, setShowMap] = useState(false)
 
@@ -21,28 +23,28 @@ export default function Location() {
     <section className="section">
       <div className="container location">
         <div id="ubicacion" className="location-copy" data-reveal>
-          <p className="eyebrow">Ubicación</p>
-          <h2>Cerca de todo, lejos del ruido</h2>
+          <p className="eyebrow">{t.location.eyebrow}</p>
+          <h2>{t.location.title}</h2>
           <p className="location-address">
             <MapPin size={20} aria-hidden="true" /> {site.location.address}
           </p>
           <ul className="nearby">
-            {site.location.nearby.map((n) => (
-              <li key={n.label}><span>{n.label}</span><strong>{n.value}</strong></li>
+            {t.location.nearby.map((label, i) => (
+              <li key={label}><span>{label}</span><strong>{site.location.nearbyTimes[i]}</strong></li>
             ))}
           </ul>
           <p className="location-hours">
-            <Clock size={18} aria-hidden="true" /> Check-in desde las {site.checkIn} · Check-out hasta las {site.checkOut}
+            <Clock size={18} aria-hidden="true" /> {t.location.hours}
           </p>
           <a className="btn btn-outline" href={site.location.mapLink} target="_blank" rel="noopener noreferrer">
-            Cómo llegar
+            {t.location.directions}
           </a>
         </div>
 
         <div className="map-frame" ref={mapRef} data-reveal>
           {showMap && (
             <iframe
-              title={`Mapa de ${site.name}`}
+              title={t.location.mapTitle(site.name)}
               src={site.location.mapEmbedUrl}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

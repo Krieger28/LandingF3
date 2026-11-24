@@ -9,6 +9,7 @@ import Location from './components/Location.jsx'
 import Faq from './components/Faq.jsx'
 import Footer from './components/Footer.jsx'
 import WhatsAppFab from './components/WhatsAppFab.jsx'
+import { useLang } from './i18n/index.jsx'
 
 // El formulario + calendario se descarga recién cuando alguien lo abre,
 // así la carga inicial de la página es mínima.
@@ -16,6 +17,7 @@ const loadBooking = () => import('./components/BookingModal.jsx')
 const BookingModal = lazy(loadBooking)
 
 export default function App() {
+  const { t } = useLang()
   const [bookingFor, setBookingFor] = useState(null) // { accessible } = abierto, null = cerrado
 
   const openBooking = useCallback((opts) => setBookingFor({ accessible: !!opts?.accessible }), [])
@@ -25,7 +27,7 @@ export default function App() {
 
   return (
     <>
-      <a className="skip-link" href="#contenido">Saltar al contenido</a>
+      <a className="skip-link" href="#contenido">{t.common.skip}</a>
       <Header onBook={openBooking} onIntent={loadBooking} />
       <main id="contenido">
         <Hero onBook={openBooking} onIntent={loadBooking} />
