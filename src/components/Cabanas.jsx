@@ -1,18 +1,21 @@
 import { useRef, useState } from 'react'
 import { Accessibility, Bath, BedDouble, Check, ChevronLeft, ChevronRight, Ruler, Users } from 'lucide-react'
 import Picture from './Picture.jsx'
+import Lightbox from './Lightbox.jsx'
 import { getImages } from '../lib/images.js'
 import { cabanas } from '../data/cabanas.js'
 
 export default function Cabanas({ onBook, onIntent }) {
   return (
-    <section id="cabanas" className="section">
-      <div className="container">
+    <section className="section">
+      {/* El ancla va en el contenedor (empieza justo en el título) y no en la sección,
+          para que el link del header no deje a la vista el padding superior. */}
+      <div id="cabanas" className="container">
         <header className="section-head" data-reveal>
           <p className="eyebrow">Nuestras cabañas</p>
           <h2>Elegí dónde descansar</h2>
           <p className="section-lead">
-            Dos cabañas gemelas, cómodas y luminosas, y una cabaña grande pensada para que nadie quede afuera.
+            Dos cabañas gemelas, cómodas y luminosas, y una cabaña accesible pensada para que nadie quede afuera.
           </p>
         </header>
 
@@ -44,13 +47,15 @@ function CabinCard({ cabin, onBook, onIntent }) {
       <div className="cabin-body">
         <div className="cabin-title">
           <h3>{cabin.name}</h3>
-          {featured && <span className="tag">La más amplia</span>}
         </div>
         <p className="cabin-summary">{cabin.summary}</p>
 
         <ul className="cabin-specs" aria-label="Características principales">
           <li><Users size={18} aria-hidden="true" /> {cabin.guests} huéspedes</li>
-          <li><BedDouble size={18} aria-hidden="true" /> {cabin.bedrooms} dormitorios</li>
+          <li>
+            <BedDouble size={18} aria-hidden="true" />{' '}
+            {cabin.bedrooms === 0 ? 'Monoambiente' : `${cabin.bedrooms} ${cabin.bedrooms > 1 ? 'dormitorios' : 'dormitorio'}`}
+          </li>
           <li><Bath size={18} aria-hidden="true" /> {cabin.bathrooms} {cabin.bathrooms > 1 ? 'baños' : 'baño'}</li>
           <li><Ruler size={18} aria-hidden="true" /> {cabin.size} m²</li>
         </ul>
@@ -75,7 +80,7 @@ function CabinCard({ cabin, onBook, onIntent }) {
           className="btn btn-primary btn-block"
           onMouseEnter={onIntent}
           onFocus={onIntent}
-          onClick={() => onBook(cabin.id)}
+          onClick={() => onBook()}
         >
           Consultar disponibilidad
         </button>
@@ -88,7 +93,15 @@ function CabinCard({ cabin, onBook, onIntent }) {
 function Gallery({ images, name, sizes, badge }) {
   const track = useRef(null)
   const [index, setIndex] = useState(0)
+  const [viewer, setViewer] = useState(null) // índice de la foto abierta a pantalla completa
   const count = Math.max(images.length, 1)
+
+  // Al cerrar el visor, la galería queda en la última foto que se vio.
+  const closeViewer = (i) => {
+    setViewer(null)
+    const el = track.current
+    if (el) el.scrollTo({ left: i * el.clientWidth, behavior: 'instant' })
+  }
 
   const go = (dir) => {
     const el = track.current
@@ -112,7 +125,9 @@ function Gallery({ images, name, sizes, badge }) {
         ) : (
           images.map((pic, i) => (
             <div className="gallery-slide" key={pic.img.src}>
-              <Picture pic={pic} alt={`${name} — foto ${i + 1} de ${images.length}`} sizes={sizes} />
+              <button className="gallery-open" onClick={() => setViewer(i)} aria-label={`Ver ${name} — foto ${i + 1} de ${images.length} en pantalla completa`}>
+                <Picture pic={pic} alt="" sizes={sizes} />
+              </button>
             </div>
           ))
         )}
@@ -131,6 +146,8 @@ function Gallery({ images, name, sizes, badge }) {
           <div className="gallery-count" aria-live="polite">{index + 1} / {images.length}</div>
         </>
       )}
+
+      {viewer !== null && <Lightbox images={images} name={name} start={viewer} onClose={closeViewer} />}
     </div>
   )
 }

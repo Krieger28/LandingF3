@@ -2,9 +2,9 @@ import { faqs } from '../data/site.js'
 
 export default function Faq() {
   return (
-    <section id="preguntas" className="section section-sand">
+    <section className="section section-sand section-faq">
       <div className="container faq">
-        <header className="section-head" data-reveal>
+        <header id="preguntas" className="section-head" data-reveal>
           <p className="eyebrow">Preguntas frecuentes</p>
           <h2>Antes de viajar</h2>
         </header>

@@ -8,7 +8,7 @@ const steps = [
 
 export default function HowToBook() {
   return (
-    <section className="section">
+    <section className="section section-steps">
       <div className="container">
         <header className="section-head" data-reveal>
           <p className="eyebrow">Cómo reservar</p>

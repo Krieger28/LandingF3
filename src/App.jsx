@@ -16,9 +16,9 @@ const loadBooking = () => import('./components/BookingModal.jsx')
 const BookingModal = lazy(loadBooking)
 
 export default function App() {
-  const [bookingFor, setBookingFor] = useState(null) // id de cabaña, '' = sin elegir, null = cerrado
+  const [bookingFor, setBookingFor] = useState(null) // { accessible } = abierto, null = cerrado
 
-  const openBooking = useCallback((cabinId = '') => setBookingFor(cabinId), [])
+  const openBooking = useCallback((opts) => setBookingFor({ accessible: !!opts?.accessible }), [])
   const closeBooking = useCallback(() => setBookingFor(null), [])
 
   useReveal()
@@ -41,7 +41,7 @@ export default function App() {
 
       {bookingFor !== null && (
         <Suspense fallback={null}>
-          <BookingModal initialCabin={bookingFor} onClose={closeBooking} />
+          <BookingModal initialAccessible={bookingFor.accessible} onClose={closeBooking} />
         </Suspense>
       )}
     </>

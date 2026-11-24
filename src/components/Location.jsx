@@ -18,9 +18,9 @@ export default function Location() {
   }, [])
 
   return (
-    <section id="ubicacion" className="section">
+    <section className="section">
       <div className="container location">
-        <div className="location-copy" data-reveal>
+        <div id="ubicacion" className="location-copy" data-reveal>
           <p className="eyebrow">Ubicación</p>
           <h2>Cerca de todo, lejos del ruido</h2>
           <p className="location-address">

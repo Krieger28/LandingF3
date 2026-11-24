@@ -1,18 +1,18 @@
-import { Car, Flame, ShieldCheck, Snowflake, Sparkles, Tv, Utensils, Wifi } from 'lucide-react'
+import { Car, ChefHat, Flame, HouseHeart, ShieldCheck, ShowerHead, Sparkles, SunSnow, Tv, Utensils, Waves, Wifi } from 'lucide-react'
 import Picture from './Picture.jsx'
 import { amenities } from '../data/site.js'
 import { getImages } from '../lib/images.js'
 
 // Íconos disponibles para usar en site.js → amenities[].icon
-const icons = { Car, Flame, ShieldCheck, Snowflake, Sparkles, Tv, Utensils, Wifi }
+const icons = { Car, ChefHat, Flame, HouseHeart, ShieldCheck, ShowerHead, Sparkles, SunSnow, Tv, Utensils, Waves, Wifi }
 
 const entorno = getImages('entorno').slice(0, 4)
 
 export default function Amenities() {
   return (
-    <section id="servicios" className="section section-sand">
+    <section className="section section-sand">
       <div className="container">
-        <header className="section-head" data-reveal>
+        <header id="servicios" className="section-head" data-reveal>
           <p className="eyebrow">Servicios</p>
           <h2>Todo lo que necesitás, ya está</h2>
           <p className="section-lead">Llegá y disfrutá: cada cabaña está completamente equipada.</p>

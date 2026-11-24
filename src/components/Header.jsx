@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { site } from '../data/site.js'
+import isotipo from '../assets/images/logos/la-posta-isotipo-verde.svg'
 
 const links = [
   { href: '#cabanas', label: 'Cabañas' },
@@ -36,14 +37,12 @@ export default function Header({ onBook, onIntent }) {
       <div className="container header-inner">
         <a href="#top" className="brand" onClick={close}>
           <span className="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="30" height="30">
-              <path d="M16 3 3 14h3.5v14h19V14H29L16 3Z" fill="currentColor" opacity=".15" />
-              <path d="M16 3 3 14h3.5v14h19V14H29L16 3Zm-3 25v-8h6v8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-            </svg>
+            <img src={isotipo} alt="" width="53" height="30" />
           </span>
           <span className="brand-text">
-            <small>Cabañas</small>
-            {site.shortName}
+              {site.shortName}
+            <small>   DEL TRAPICHE</small>
+          
           </span>
         </a>
 

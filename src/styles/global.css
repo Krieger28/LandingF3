@@ -28,7 +28,7 @@
 
 /* ───────────── Base ───────────── */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 8px); -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 2rem); -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -94,6 +94,16 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
 [data-reveal].is-visible { opacity: 1; transform: none; }
+/* Anclas del menú sobre elementos con reveal: mientras todavía no aparecieron están corridos
+   18px hacia abajo; compensamos para que el scroll termine justo en su lugar final. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal][id]:not(.is-visible) { scroll-margin-top: 18px; }
+}
+/* Accesibilidad: 4rem de aire sobre el ícono (2rem generales del scroll-padding + 2rem). */
+#accesibilidad { scroll-margin-top: 2rem; }
+@media (prefers-reduced-motion: no-preference) {
+  #accesibilidad:not(.is-visible) { scroll-margin-top: calc(2rem + 18px); }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
@@ -103,20 +113,28 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* ───────────── Header ───────────── */
 .site-header {
   position: fixed; inset: 0 0 auto; z-index: 50; height: var(--header-h);
-  color: #fff; transition: background-color .3s, box-shadow .3s, color .3s;
+  color: #fff; transition: box-shadow .3s, color .3s;
 }
-.site-header.is-solid { background: rgb(251 249 245 / .94); color: var(--ink); box-shadow: 0 1px 0 var(--line); backdrop-filter: saturate(1.4) blur(10px); }
+/* El fondo y el blur van en un pseudo-elemento y no en el header: un backdrop-filter en el
+   header lo convierte en "containing block" de sus hijos fixed y el menú móvil quedaba
+   encerrado en los 76px del header (se veía transparente al abrirlo y al cerrarlo). */
+.site-header::before { content: ''; position: absolute; inset: 0; z-index: -1; transition: background-color .3s; }
+.site-header.is-solid { color: var(--ink); box-shadow: 0 1px 0 var(--line); }
+.site-header.is-solid::before { background: rgb(251 249 245 / .94); -webkit-backdrop-filter: saturate(1.4) blur(10px); backdrop-filter: saturate(1.4) blur(10px); }
 .header-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.brand-mark { color: currentColor; }
-.site-header.is-solid .brand-mark { color: var(--forest); }
-.brand-text { font-family: var(--font-display); font-size: 1.35rem; line-height: 1; font-weight: 500; }
-.brand-text small { display: block; font-family: var(--font-body); font-size: .62rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; opacity: .75; margin-bottom: 4px; }
+.brand-mark { display: flex; }
+/* Isotipo verde: en blanco sobre el hero (header transparente), verde original al hacer scroll */
+.brand-mark img { display: block; height: 45px; width: auto; filter: brightness(0) invert(1); transition: filter .3s; }
+.site-header.is-solid .brand-mark img { filter: none; }
+.brand-text { font-family: var(--font-display); font-size: 2rem; line-height: 1; font-weight: 600; }
+.site-header.is-solid .brand-text { color: var(--forest); }
+.brand-text small { display: block; font-family: var(--font-body); font-size: .66rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; opacity: .75; margin-top: 4px; text-align: center; }
 
 .main-nav { display: flex; align-items: center; gap: 28px; }
 .main-nav ul { display: flex; gap: 26px; }
 .main-nav a { text-decoration: none; font-size: .95rem; font-weight: 500; opacity: .9; position: relative; padding: 6px 0; }
-.main-nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: currentColor; transform: scaleX(0); transition: transform .25s; transform-origin: left; }
+.main-nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: currentColor; transform: scaleX(0); transition: transform .25s; transform-origin: left; }
 .main-nav a:hover::after { transform: scaleX(1); }
 .nav-cta { min-height: 42px; padding: 0 20px; }
 .nav-toggle { display: none; background: none; border: 0; padding: 8px; margin-right: -8px; cursor: pointer; color: inherit; }
@@ -187,7 +205,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   display: flex; flex-direction: column; background: var(--paper); border-radius: var(--radius);
   box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgb(0 0 0 / .04);
 }
-.cabin-card.is-featured { grid-column: 1 / -1; display: grid; grid-template-columns: 1.15fr 1fr; order: -1; }
+.cabin-card.is-featured { grid-column: 1 / -1; display: grid; grid-template-columns: 1.15fr 1fr; }
 .cabin-card.is-featured .gallery { aspect-ratio: auto; min-height: 100%; }
 .cabin-body { display: flex; flex-direction: column; gap: 16px; padding: clamp(22px, 3vw, 34px); flex: 1; }
 .cabin-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -229,6 +247,41 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .gallery-slide { flex: 0 0 100%; scroll-snap-align: start; height: 100%; }
 .gallery-slide picture, .gallery-slide img { width: 100%; height: 100%; }
 .gallery-slide img { object-fit: cover; }
+.gallery-open { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+.gallery-open:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+
+/* ───────────── Visor de fotos a pantalla completa ───────────── */
+.lightbox {
+  width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: rgb(10 14 12 / .94); color: #fff; overscroll-behavior: contain;
+}
+.lightbox[open] { display: grid; place-items: center; animation: lightbox-in .22s ease; }
+.lightbox::backdrop { background: transparent; }
+@keyframes lightbox-in { from { opacity: 0; } }
+.lightbox-stage { transform-origin: center; transition: transform .12s ease-out; will-change: transform; }
+.lightbox-stage.is-zoomed img { cursor: grab; }
+.lightbox-stage.is-dragging { transition: none; }
+.lightbox-stage.is-dragging img { cursor: grabbing; }
+.lightbox-pic { display: contents; }
+.lightbox-pic img {
+  width: auto; height: auto; max-width: calc(100vw - 32px); max-height: calc(100dvh - 120px);
+  object-fit: contain; border-radius: 6px; user-select: none; -webkit-user-drag: none; cursor: default;
+}
+.lightbox-btn {
+  position: absolute; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
+  border: 0; background: rgb(255 255 255 / .14); color: #fff; cursor: pointer; transition: background-color .2s;
+}
+.lightbox-btn:hover { background: rgb(255 255 255 / .26); }
+.lightbox-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.lightbox-close { top: 16px; right: 16px; }
+.lightbox-nav { top: 50%; transform: translateY(-50%); }
+.lightbox-nav.prev { left: 16px; }
+.lightbox-nav.next { right: 16px; }
+.lightbox-count { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: .9rem; font-weight: 600; opacity: .85; }
+@media (max-width: 640px) {
+  .lightbox-nav { top: auto; bottom: 10px; transform: none; }
+  .lightbox-count { bottom: 24px; }
+}
 .gallery-badge { position: absolute; top: 16px; left: 16px; }
 .badge { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: .82rem; font-weight: 600; box-shadow: 0 4px 14px -4px rgb(0 0 0 / .3); }
 .badge-access { background: var(--access); color: #fff; }
@@ -241,12 +294,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
 @media (hover: none) { .gallery-btn { opacity: 1; } }
 .gallery-btn.prev { left: 12px; }
 .gallery-btn.next { right: 12px; }
-.gallery-count { position: absolute; right: 14px; bottom: 14px; padding: 4px 10px; border-radius: 999px; background: rgb(0 0 0 / .55); color: #fff; font-size: .78rem; font-weight: 600; }
+.gallery-count { position: absolute; right: 14px; bottom: 14px; padding: 4px 10px; border-radius: 999px; background: rgba(0, 0, 0, 0.55); color: #fff; font-size: .78rem; font-weight: 600; }
 
 /* ───────────── Accesibilidad ───────────── */
 .section-access { background: linear-gradient(135deg, var(--forest) 0%, #183026 100%); color: #fff; }
 .access-inner { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
-.access-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: rgb(255 255 255 / .1); margin-bottom: 22px; color: #f1d9c6; }
+.access-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--access); margin-bottom: 22px; color: #fff; }
 .access-copy h2 { font-size: clamp(2rem, 4.4vw, 3rem); margin-bottom: 18px; }
 .access-copy p { color: rgb(255 255 255 / .82); font-size: 1.08rem; max-width: 520px; }
 .access-copy .btn { margin-top: 30px; }
@@ -266,7 +319,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .entorno-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 40px; }
 .entorno-grid picture { aspect-ratio: 1; border-radius: var(--radius-sm); overflow: hidden; }
 .entorno-grid img { width: 100%; height: 100%; object-fit: cover; }
-@media (max-width: 960px) { .amenity-grid, .entorno-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 960px) {
+  .amenity-grid, .entorno-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Todas las tarjetas del mismo ancho y alto: columnas que no se estiran por palabras largas
+     y filas iguales (toman la altura de la tarjeta más alta). */
+  .amenity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; }
+}
 @media (max-width: 480px) { .amenity-grid { gap: 12px; } .amenity { padding: 20px 18px; } }
 
 /* ───────────── Steps ───────────── */
@@ -277,6 +335,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .step p { color: var(--muted); font-size: .96rem; }
 .step-num { position: absolute; top: 20px; right: 24px; font-family: var(--font-display); font-size: 3rem; line-height: 1; color: var(--line); }
 @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+/* Menos aire debajo de los 3 pasos (la sección siguiente ya suma su propio padding). */
+.section-steps { padding-bottom: clamp(24px, 4vw, 48px); }
 
 /* ───────────── Location ───────────── */
 .location { display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
@@ -305,6 +365,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .faq-item[open] summary::after { transform: rotate(-135deg); margin-top: -2px; }
 .faq-item p { padding: 0 24px 22px; color: var(--muted); }
+/* En celulares, más aire bajo las preguntas antes del footer. */
+@media (max-width: 640px) { .section-faq { padding-bottom: 120px; } }
 
 /* ───────────── Footer ───────────── */
 .site-footer { background: #13251d; color: rgb(255 255 255 / .8); padding: 0 0 32px; }
@@ -318,14 +380,22 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .cta-band .btn-primary { background: #fff; color: var(--accent-hover); box-shadow: none; }
 .cta-band .btn-primary:hover { background: var(--sand); }
 .footer-grid { display: grid; grid-template-columns: 1.2fr 1.4fr 1fr; gap: 32px; padding-bottom: 40px; border-bottom: 1px solid rgb(255 255 255 / .1); }
-.footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: #fff; }
-.footer-tag { margin-top: 6px; }
+.footer-brand { display: inline-flex; color: #fff; }
+.footer-tag { margin-top: 14px; }
 .footer-contact, .footer-social { display: grid; gap: 12px; font-size: .96rem; }
 .footer-contact li, .footer-social a { display: flex; align-items: center; gap: 10px; }
 .footer-contact svg { flex: none; color: #f1d9c6; }
 .footer-contact a, .footer-social a { text-decoration: none; }
 .footer-contact a:hover, .footer-social a:hover { color: #fff; text-decoration: underline; }
 .footer-legal { padding-top: 24px; font-size: .85rem; color: rgb(255 255 255 / .5); }
+/* En escritorio, contacto y redes comparten filas (subgrid): WhatsApp queda alineado con la
+   dirección e Instagram con el mail, aunque la dirección ocupe dos líneas. */
+@media (min-width: 861px) {
+  .footer-grid { grid-template-rows: auto auto; row-gap: 12px; }
+  .footer-grid > * { grid-row: span 2; }
+  .footer-contact, .footer-social { grid-template-rows: subgrid; gap: 0; row-gap: 12px; }
+  .footer-contact li, .footer-social li { align-self: start; }
+}
 @media (max-width: 860px) {
   .footer-grid { grid-template-columns: 1fr; }
 }

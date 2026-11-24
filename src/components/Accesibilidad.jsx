@@ -12,9 +12,9 @@ const points = [
 export default function Accesibilidad({ onBook }) {
   if (!accessible) return null
   return (
-    <section id="accesibilidad" className="section section-access">
+    <section className="section section-access">
       <div className="container access-inner">
-        <div className="access-copy" data-reveal>
+        <div id="accesibilidad" className="access-copy" data-reveal>
           <span className="access-icon" aria-hidden="true"><Accessibility size={34} strokeWidth={1.6} /></span>
           <p className="eyebrow eyebrow-light">Turismo accesible</p>
           <h2>Un lugar pensado para todos</h2>
@@ -22,8 +22,8 @@ export default function Accesibilidad({ onBook }) {
             La cabaña <strong>{accessible.name.replace('Cabaña ', '')}</strong> fue diseñada para personas con
             movilidad reducida, adultos mayores y familias que necesitan más espacio, sin resignar comodidad ni estética.
           </p>
-          <button className="btn btn-light" onClick={() => onBook(accessible.id)}>
-            Consultar por {accessible.name}
+          <button className="btn btn-light" onClick={() => onBook({ accessible: true })}>
+            Consultar disponibilidad accesible
           </button>
         </div>
 

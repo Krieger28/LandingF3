@@ -41,7 +41,7 @@ export default function Hero({ onBook, onIntent }) {
         <ul className="hero-facts">
           <li><Trees size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>{cabanas.length} cabañas</strong> rodeadas de verde</span></li>
           <li><Users size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>Hasta {totalGuests}</strong> huéspedes en total</span></li>
-          <li><Accessibility size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>Cabaña accesible</strong> sin barreras</span></li>
+          <li><Accessibility size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>Cabaña accesible</strong> para todos</span></li>
           <li><BedDouble size={22} strokeWidth={1.6} aria-hidden="true" /> <span><strong>Ropa blanca</strong> incluida</span></li>
         </ul>
       </div>
