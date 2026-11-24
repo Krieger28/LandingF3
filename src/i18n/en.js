@@ -35,11 +35,12 @@ export default {
 
   hero: {
     tagline: 'Rest, nature and tranquility',
-    title: ['Your refuge to ', 'unplug', ' and enjoy'],
+    // \n = salto de línea forzado (3 renglones como en español)
+    title: ['Your refuge\nto ', 'unplug', '\nand enjoy'],
     lead: 'Three fully equipped cabins surrounded by greenery, made for you to disconnect. One of them is fully accessible.',
     seeCabins: 'See the cabins',
     facts: {
-      cabins: (n) => [`${n} cabins`, ' surrounded by greenery'],
+      cabins: (n) => [`${n} cabins`, ' in nature'],
       guests: (n) => [`Up to ${n}`, ' guests in total'],
       accessible: ['Accessible cabin', ' for everyone'],
       linen: ['Linens', ' included'],
@@ -67,7 +68,7 @@ export default {
       'Private grill',
       'Wi-Fi',
       'Smart TV',
-      'Heating/air conditioning',
+      'Air conditioning',
       'Linens included',
     ],
     items: {
@@ -122,7 +123,7 @@ export default {
     surroundings: (i) => `The surroundings — photo ${i}`,
     items: [
       ['Wi-Fi', 'Fast connection in all cabins.'],
-      ['Air conditioning', 'Heating/cooling in every room.'],
+      ['A/C', 'Heating/cooling in every room.'],
       ['Smart TV', 'With access to your favorite streaming platforms.'],
       ['Shared pool', 'Spacious, with a fenced sun deck.'],
       ['Grill', 'Private grill, usable all year round.'],

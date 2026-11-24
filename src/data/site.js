@@ -8,8 +8,8 @@ export const site = {
   shortName: "La Posta",
 
   location: {
-    city: "Tu ciudad",
-    province: "Provincia",
+    city: "El Trapiche",
+    province: "San Luis",
     address: "Pampa Rodriguez Saá 1913, El Trapiche, San Luis",
     // Google Maps → Compartir → Incorporar un mapa → copiá solo la URL del "src"
     mapEmbedUrl:
