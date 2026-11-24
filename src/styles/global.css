@@ -125,7 +125,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .brand-mark { display: flex; }
 /* Isotipo verde: en blanco sobre el hero (header transparente), verde original al hacer scroll */
-.brand-mark img { display: block; height: 45px; width: auto; filter: brightness(0) invert(1); transition: filter .3s; }
+.brand-mark img { display: block; height: 62px; width: auto; filter: brightness(0) invert(1); transition: filter .3s; }
 .site-header.is-solid .brand-mark img { filter: none; }
 .brand-text { font-family: var(--font-display); font-size: 2rem; line-height: 1; font-weight: 600; }
 .site-header.is-solid .brand-text { color: var(--forest); }
